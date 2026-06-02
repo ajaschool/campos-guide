@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
+<meta name="googlebot" content="noindex,nofollow" />
+<title>campOS — 기능 안내서</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root{
+    --font:"Pretendard Variable","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    --bg:#f5f5f7; --panel:#fff; --sub:#f0f0f3; --deep:#1d1d1f;
+    --line:#e6e6e9; --line2:#d8d8dc;
+    --fg:#1d1d1f; --fg2:#404048; --fg3:#86868b; --fg4:#aeaeb4;
+    --admin:#0071e3; --admin-soft:#eaf3ff;
+    --mentor:#1a9e5d; --mentor-soft:#e6f6ee;
+    --medic:#e0552b; --medic-soft:#fdeee6;
+    --warn:#b8860b; --warn-soft:#fff7e0;
+    --r:12px; --r-lg:20px; --maxw:1240px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--font);color:var(--fg);background:var(--bg);
+    -webkit-font-smoothing:antialiased;letter-spacing:-.01em;line-height:1.65;}
+  img{display:block;max-width:100%;}
+  h1,h2,h3,h4{letter-spacing:-.022em;line-height:1.28;margin:0;}
+  p{margin:0;}
+
+  /* ── 상단 네비 ── */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:100;height:52px;
+    display:flex;align-items:center;gap:18px;padding:0 22px;
+    background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(18px);
+    -webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line);}
+  .nav .brand{font-weight:700;font-size:15px;}
+  .nav .brand .dot{color:var(--admin);}
+  .nav .links{display:flex;gap:2px;margin-left:auto;overflow-x:auto;}
+  .nav a{font-size:12.5px;font-weight:500;color:var(--fg2);text-decoration:none;
+    padding:6px 11px;border-radius:99px;white-space:nowrap;transition:background .12s;}
+  .nav a:hover{background:var(--sub);color:var(--fg);}
+  @media(max-width:760px){.nav .links{display:none;}}
+
+  /* ── 섹션 공통 ── */
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;}
+  section{padding:88px 0 76px;border-top:1px solid var(--line);}
+  section:first-of-type{border-top:none;}
+  .kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;
+    font-size:13px;font-weight:700;color:var(--fg2);
+    background:var(--panel);border:1px solid var(--line);padding:7px 15px;border-radius:99px;}
+  .kicker .dot{width:9px;height:9px;border-radius:99px;background:var(--deep);}
+  .kicker.k-admin .dot{background:var(--admin);} .kicker.k-mentor .dot{background:var(--mentor);}
+  .kicker.k-medic .dot{background:var(--medic);}
+  .kicker.k-flow .dot{background:linear-gradient(90deg,var(--admin),var(--mentor));}
+  .sec-title{font-size:33px;font-weight:780;margin-bottom:14px;}
+  .sec-lead{font-size:17px;color:var(--fg2);max-width:680px;}
+
+  /* ── 표지 ── */
+  .hero{min-height:90vh;display:flex;flex-direction:column;justify-content:center;
+    background:radial-gradient(120% 80% at 50% 0%,#fff 0%,#f5f5f7 70%);text-align:center;padding-top:52px;}
+  .hero .badge{display:inline-block;font-size:13px;font-weight:600;color:var(--admin);
+    background:var(--admin-soft);padding:7px 15px;border-radius:99px;margin:0 auto 26px;}
+  .hero h1{font-size:60px;font-weight:820;margin-bottom:22px;}
+  .hero h1 small{display:block;font-size:20px;font-weight:600;color:var(--fg3);margin-top:16px;letter-spacing:-.01em;}
+  .hero p{font-size:18px;color:var(--fg2);max-width:580px;margin:0 auto;}
+  .flowbar{margin:42px auto 0;display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;
+    background:#fff;border:1px solid var(--line);border-radius:99px;padding:10px 20px;font-size:13.5px;font-weight:600;color:var(--fg2);}
+  .flowbar b{color:var(--fg);} .flowbar .sep{color:var(--fg4);font-weight:400;}
+  .hero .scroll{margin-top:46px;font-size:13px;color:var(--fg4);}
+  @media(max-width:760px){.hero h1{font-size:38px;}.hero h1 small{font-size:16px;}}
+
+  /* ── 역할 태그 ── */
+  .role{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;
+    padding:5px 11px;border-radius:99px;white-space:nowrap;}
+  .role.admin{color:var(--admin);background:var(--admin-soft);}
+  .role.mentor{color:var(--mentor);background:var(--mentor-soft);}
+  .role.medic{color:var(--medic);background:var(--medic-soft);}
+  .role .ico{width:7px;height:7px;border-radius:99px;background:currentColor;}
+
+  /* ── 앱 3장 카드 ── */
+  .apps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px;}
+  .app{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;}
+  .app h3{font-size:18px;margin:14px 0 6px;}
+  .app .plat{font-size:12.5px;color:var(--fg3);font-weight:600;margin-bottom:14px;}
+  .app ul{margin:0;padding-left:17px;font-size:13.5px;color:var(--fg2);}
+  .app ul li{margin:6px 0;}
+  @media(max-width:760px){.apps{grid-template-columns:1fr;}}
+
+  /* ── 등장인물 매핑 ── */
+  .cast{margin-top:30px;background:var(--warn-soft);border:1px solid #f0e2b8;
+    border-radius:var(--r);padding:18px 22px;font-size:14px;color:var(--fg2);}
+  .cast b{color:var(--fg);}
+  .cast .row{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:11px;}
+  .cast .row span{font-size:13.5px;}
+
+  /* ── 화면 카드 ── */
+  .screen{margin-top:46px;}
+  .screen-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+  .screen-head h3{font-size:22px;font-weight:740;}
+  .screen-sub{font-size:15px;color:var(--fg2);margin-bottom:22px;max-width:740px;}
+
+  .shot{border-radius:14px;overflow:hidden;border:1px solid var(--line2);
+    box-shadow:0 16px 40px -18px rgba(0,0,0,.22);background:#fff;}
+  .shot.wide{width:100%;}
+  .shot.framed{padding:0;}
+  img.shot,.shot img,.phone .scr img{cursor:zoom-in;}
+  .phone{width:280px;flex:0 0 280px;border-radius:34px;padding:8px;background:#1d1d1f;
+    box-shadow:0 22px 50px -20px rgba(0,0,0,.4);}
+  .phone .scr{border-radius:27px;overflow:hidden;background:#fff;}
+  /* 긴 모바일 화면 위쪽만 보이고 아래 페이드 */
+  .phone-clip .scr{max-height:408px;overflow:hidden;position:relative;}
+  .phone-clip .scr::after{content:"";position:absolute;left:0;right:0;bottom:0;height:66px;
+    background:linear-gradient(rgba(255,255,255,0),#fff);pointer-events:none;}
+
+  /* 3블록 */
+  .blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:24px;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;}
+  .blocks .b{padding:22px 24px;border-left:1px solid var(--line);}
+  .blocks .b:first-child{border-left:none;}
+  .blocks .b h4{font-size:11.5px;font-weight:700;letter-spacing:.05em;color:var(--fg3);
+    text-transform:uppercase;margin-bottom:12px;}
+  .blocks .b p,.blocks .b li{font-size:14px;color:var(--fg2);line-height:1.62;}
+  .blocks .b ol{margin:0;padding-left:19px;}
+  .blocks .b ol li{margin:8px 0;padding-left:3px;}
+  .blocks .b.feat{background:#fbfbfd;}
+  .blocks .b.feat p{color:var(--fg);}
+  @media(max-width:840px){.blocks{grid-template-columns:1fr;}
+    .blocks .b{border-left:none;border-top:1px solid var(--line);}
+    .blocks .b:first-child{border-top:none;}}
+
+  /* narrow: 폰 + 텍스트 */
+  .narrow{display:flex;gap:36px;align-items:flex-start;}
+  .narrow .side{flex:1;min-width:0;}
+  @media(max-width:760px){.narrow{flex-direction:column;align-items:center;}.narrow .side{width:100%;}}
+
+  /* duo: 상호작용 */
+  .duo{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;margin-top:26px;}
+  .duo-flow{display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:center;}
+  .duo-flow .col{flex:1;min-width:240px;text-align:center;display:flex;flex-direction:column;align-items:center;}
+  .duo-flow .col .cap{font-size:13px;color:var(--fg2);margin-top:13px;max-width:300px;}
+  .duo-flow .col .rt{margin-bottom:12px;}
+  .duo-flow .arrow{font-size:24px;color:var(--fg4);font-weight:300;flex:0 0 auto;text-align:center;}
+  .duo-flow .arrow small{display:block;font-size:10.5px;color:var(--fg4);font-weight:700;margin-top:3px;letter-spacing:.03em;}
+  .duo .shot.wide{max-width:700px;margin:0 auto;}
+
+  /* 라이트박스 (이미지 클릭 → 전체화면) */
+  #lb{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.86);
+    padding:3vmin;cursor:zoom-out;align-items:center;justify-content:center;
+    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+  #lb.on{display:flex;}
+  #lb img{max-width:100%;max-height:100%;border-radius:10px;box-shadow:0 24px 70px rgba(0,0,0,.55);}
+  #lb .x{position:fixed;top:18px;right:22px;color:#fff;font-size:30px;font-weight:300;
+    opacity:.8;cursor:pointer;line-height:1;}
+  #lb .hint{position:fixed;bottom:18px;left:0;right:0;text-align:center;color:rgba(255,255,255,.65);
+    font-size:12.5px;letter-spacing:.02em;}
+  @media(max-width:760px){.duo-flow .arrow{transform:rotate(90deg);}}
+
+  /* 설명 박스 / 스텝 */
+  .note{margin-top:18px;background:var(--sub);border-radius:var(--r);padding:16px 20px;font-size:14px;color:var(--fg2);line-height:1.62;}
+  .note b{color:var(--fg);}
+  .steps{display:flex;flex-direction:column;gap:15px;margin-top:6px;}
+  .step{display:flex;gap:14px;align-items:flex-start;}
+  .step .n{flex:0 0 25px;height:25px;border-radius:99px;background:var(--deep);color:#fff;
+    display:grid;place-items:center;font-size:12px;font-weight:700;margin-top:1px;}
+  .step .t{font-size:14.5px;color:var(--fg2);line-height:1.55;}
+  .step .t b{color:var(--fg);}
+
+  .pair{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;margin-bottom:6px;}
+
+  /* ── 다이어그램 ── */
+  .diagram{margin-top:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 28px;}
+  .diagram .dt{font-size:15px;font-weight:740;color:var(--fg);margin-bottom:6px;}
+  .diagram .dd{font-size:13.5px;color:var(--fg2);margin-bottom:22px;}
+  .flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
+  .flow .node{flex:0 1 auto;min-width:108px;max-width:200px;background:var(--sub);border-radius:13px;padding:15px 16px;text-align:center;
+    display:flex;flex-direction:column;justify-content:center;}
+  .flow .node .nh{font-size:14.5px;font-weight:740;}
+  .flow .node .nd{font-size:11.5px;color:var(--fg3);margin-top:6px;line-height:1.45;}
+  .flow .ar{flex:1 1 0;min-width:74px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:var(--fg4);font-size:17px;align-self:center;padding:0 4px;}
+  .flow .ar small{display:block;font-size:11px;color:var(--fg2);font-weight:700;margin-top:4px;letter-spacing:.01em;text-align:center;line-height:1.35;}
+  .node.s-prep{background:#eef0f2;} .node.s-prep .nh{color:var(--fg2);}
+  .node.s-live{background:var(--mentor-soft);} .node.s-live .nh{color:var(--mentor);}
+  .node.s-report{background:var(--warn-soft);} .node.s-report .nh{color:var(--warn);}
+  .node.s-done{background:#1d1d1f;} .node.s-done .nh{color:#fff;} .node.s-done .nd{color:#b8b8be;}
+  .node.s-admin{background:var(--admin-soft);} .node.s-admin .nh{color:var(--admin);}
+  .node.s-mentor{background:var(--mentor-soft);} .node.s-mentor .nh{color:var(--mentor);}
+  .node.s-medic{background:var(--medic-soft);} .node.s-medic .nh{color:var(--medic);}
+  @media(max-width:720px){.flow{flex-direction:column;align-items:stretch;}.flow .ar{transform:rotate(90deg);padding:6px 0;}}
+  /* 병합형 (두 입력 → 한 결과) */
+  .merge{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .merge .ins{display:flex;flex-direction:column;gap:12px;flex:1;min-width:230px;}
+  .merge .ins .node{text-align:left;}
+  .merge .ins .node .nh{font-size:14px;}
+  .merge .mid{flex:0 0 40px;text-align:center;color:var(--fg4);font-size:20px;}
+  .merge .out{flex:1.25;min-width:230px;}
+  .merge .out .node{padding:20px 18px;}
+  @media(max-width:720px){.merge{flex-direction:column;align-items:stretch;}.merge .mid{transform:rotate(90deg);}}
+  .legend{margin-top:16px;font-size:12.5px;color:var(--fg3);display:flex;gap:16px;flex-wrap:wrap;}
+  .legend b{color:var(--fg2);}
+
+  footer{padding:74px 0;text-align:center;border-top:1px solid var(--line);background:#fff;}
+  footer h2{font-size:27px;font-weight:760;margin-bottom:12px;}
+  footer p{font-size:15px;color:var(--fg2);}
+  footer .tag{margin-top:24px;font-size:13px;color:var(--fg3);}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="brand">camp<span class="dot">OS</span></span>
+  <div class="links">
+    <a href="#intro">세 개의 앱</a>
+    <a href="#home">관리자 홈</a>
+    <a href="#prep">행사 준비</a>
+    <a href="#join">멘토·메딕 합류</a>
+    <a href="#day">행사 당일</a>
+    <a href="#field">현장 기록</a>
+    <a href="#close">마무리</a>
+  </div>
+</nav>
+
+<!-- ════ 표지 ════ -->
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">캠프 · 체험학습 운영 플랫폼</span>
+    <h1>campOS 기능 안내서
+      <small>행사 하나가 만들어지고 끝나기까지, 실제 화면으로 따라가 봅니다</small>
+    </h1>
+    <p>관리자·멘토·메딕이 한 행사 안에서 어떻게 함께 움직이는지를
+       화면 순서대로 보여 드립니다.</p>
+    <div class="flowbar">
+      <b>준비</b><span class="sep">→</span><b>합류</b><span class="sep">→</span><b>당일 운영</b><span class="sep">→</span><b>현장 기록</b><span class="sep">→</span><b>마무리</b>
+    </div>
+    <div class="scroll">아래로 스크롤 ↓</div>
+  </div>
+</header>
+
+<!-- ════ 앱 구조 ════ -->
+<section id="intro">
+  <div class="wrap">
+    <div class="kicker k-flow"><span class="dot"></span>시작하기 전에</div>
+    <h2 class="sec-title">앱은 세 개로 나눴습니다</h2>
+    <p class="sec-lead">한 행사 안에서 관리자·멘토·메딕이 각자 다른 화면을 씁니다.
+       역할에 꼭 필요한 기능만 각 앱에 담아, 누구도 자기 일과 상관없는 화면을 헤매지 않게 했습니다.</p>
+
+    <div class="apps">
+      <div class="app">
+        <span class="role admin"><span class="ico"></span>관리자 · 웹</span>
+        <h3>모든 것을 세팅하고 지켜봅니다</h3>
+        <div class="plat">데스크탑 브라우저</div>
+        <ul>
+          <li>행사 생성 · 참가자/멘토/스태프 관리</li>
+          <li>스케줄 · 공지 · 할 일</li>
+          <li>출석 · 현장 보고 · 건강 기록을 실시간 모니터링</li>
+        </ul>
+      </div>
+      <div class="app">
+        <span class="role mentor"><span class="ico"></span>멘토 · 모바일</span>
+        <h3>담당 팀을 현장에서 챙깁니다</h3>
+        <div class="plat">모바일 웹</div>
+        <ul>
+          <li>담당 팀 참가자 관리 · 비고 메모</li>
+          <li>스케줄별 사진 업로드 · 출석체크</li>
+          <li>공지 수신 · 현장 보고 작성</li>
+        </ul>
+      </div>
+      <div class="app">
+        <span class="role medic"><span class="ico"></span>메딕 · 모바일</span>
+        <h3>참가자 건강을 기록합니다</h3>
+        <div class="plat">모바일 웹 · 스태프(type=medic)</div>
+        <ul>
+          <li>참가자 전체 명단 · 특이사항 열람</li>
+          <li>참가자별 진료 기록 작성</li>
+          <li>추후 ‘촬영·안전요원’ 등 다른 역할로 확장 가능</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cast">
+      📌 <b>이 안내서의 등장인물</b> — 설명은 역할 이름으로 부릅니다. 괄호 안은 화면에 보이는 시드 데이터 이름이에요.
+      <div class="row">
+        <span>🔵 <b>관리자1</b> (화면상 “로컬관리자”)</span>
+        <span>🟢 <b>멘토1</b> (화면상 “김민지”) · 멘토2 이태경 · 멘토3 박서영</span>
+        <span>🟠 <b>메딕1</b> (화면상 “최승인”)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ 관리자 홈 ════ -->
+<section id="home">
+  <div class="wrap">
+    <div class="kicker k-admin"><span class="dot"></span>관리자 홈</div>
+    <h2 class="sec-title">운영자가 매일 여는 화면</h2>
+    <p class="sec-lead">화면만 봐도 “지금 뭘 해야 하는지”가 보이도록 만들었습니다.
+       할 일·공지·진행 현황이 한 화면에 모입니다.</p>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>전체 대시보드</h3></div>
+      <p class="screen-sub">맨 위 “처리할 일”이 모든 행사에서 해야 할 일을 한 줄씩 모아 줍니다. 그 아래로 진행 중인 행사, 준비/진행/완료 현황, 달력과 공지가 이어집니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-01-dashboard.png" alt="관리자 대시보드" />
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>운영자의 출근 첫 화면. 여러 행사를 동시에 맡아도 해야 할 일과 진행 상황을 한눈에 파악합니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>맨 위 ‘처리할 일’에서 밀린 일 확인</li><li>긴급·전체·행사별로 필터링</li><li>항목을 누르면 해당 작업 화면으로 바로 이동</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>‘처리할 일’이 모든 할 일이 모이는 단 하나의 통로입니다. 할 일 페이지·행사 상세에서도 같은 목록을 그대로 봅니다.</p></div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>할 일</h3></div>
+      <p class="screen-sub">시스템이 스스로 찾아낸 일과 관리자가 직접 적은 일을 하나의 목록으로 합칩니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-08-todos.png" alt="할 일 페이지" />
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>자동으로 감지된 일(참가자 미등록·멘토가 안 배정된 팀 등)과, 관리자가 손으로 추가한 일을 함께 관리합니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>자동 감지 항목은 그대로 떠 있음</li><li>‘+ 할 일 추가’로 직접 등록 — 행사 지정도, 행사와 무관하게도 가능</li><li>끝내면 체크</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>대시보드·할 일 페이지·행사 상세 어디서든 추가할 수 있습니다. 표준 체크리스트 항목은 실제 운영을 거치며 확정해 나갈 예정입니다.</p></div>
+      </div>
+      <div class="note">📌 <b>처리 상태</b> — 할 일은 <b>[처리할 일] / [완료한 일]</b> 탭으로 나뉩니다. 처리하면 누가·언제 처리했는지 기록되고, 자동 감지 항목은 원인이 해소되면(예: 참가자 등록을 마치면) 목록에서 저절로 사라집니다.</div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>공지</h3></div>
+      <p class="screen-sub">관리자끼리 보는 ‘내부 공지’와, 현장(멘토·스태프)에 내려보내는 ‘행사 공지’를 분리했습니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-07-notices.png" alt="공지 페이지" />
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>두 종류의 공지를 한 곳에서 작성·관리합니다. 행사 공지는 받을 대상(관리자/멘토/스태프)과 긴급도를 지정합니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>내부/행사 탭을 골라 작성</li><li>행사 공지는 대상과 긴급/일반을 선택</li><li>등록하면 해당 앱에 바로 도착</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>공지는 관리자 → 현장으로 내려가는 단방향입니다. 반대로 현장이 올리는 통로는 ‘현장 보고’로 따로 두었습니다.</p></div>
+      </div>
+      <div class="note">📌 <b>읽음과 상태</b> — 행사 공지를 받으면 멘토 앱 벨에 빨간 점이 켜지고, 멘토가 확인하면 사라집니다(본인 확인용). 관리자 쪽 공지는 <b>미처리 / 해결</b> 상태로 따로 관리합니다.</div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>행사 목록</h3></div>
+      <p class="screen-sub">진행 중·준비 중·완료된 모든 행사를 한 곳에서 관리합니다. 여기서 행사 하나를 골라 들어가면 — 지금부터 그 행사의 일생을 따라가 봅니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-02-events.png" alt="행사 목록" />
+    </div>
+  </div>
+</section>
+
+<!-- ════ 행사 준비 ════ -->
+<section id="prep">
+  <div class="wrap">
+    <div class="kicker k-admin"><span class="dot"></span>준비</div>
+    <h2 class="sec-title">행사를 만들고 명단·팀·일정을 채웁니다</h2>
+    <p class="sec-lead">관리자1이 행사를 생성하고 → 참가자 명단을 올리고 → 팀을 나누고 → 스케줄을 등록합니다. 멘토·메딕이 들어오기 전, 관리자 혼자 준비하는 단계입니다.</p>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>행사 생성</h3></div>
+      <p class="screen-sub">필수 정보, 담당자, 출석체크 방식을 한 번에 설정해 행사를 만듭니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-04-event-new.png" alt="행사 생성" />
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>행사명·유형(1일형/숙박형)·주관기관·기간 같은 기본값과, 담당자 3인(PM·PD·AD), 출석 옵션을 정합니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>필수 정보 입력 (임시저장 가능)</li><li>담당자 3인 지정 + 기타 인력 자유 추가</li><li>선탑·중앙 출석을 쓸지 체크하고 생성</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>역할이 고정된 3인은 정해진 칸으로, 매번 달라지는 기타 인력(촬영·안전요원 등)은 자유 형식으로 받아 — 구조와 유연성을 같이 잡았습니다.</p></div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>참가자 등록 · 행사 상세</h3></div>
+      <p class="screen-sub">엑셀 명단을 한 번에 올리면 참가자가 등록되고 집결지가 자동으로 만들어집니다. 이 행사 상세 화면이 앞으로 모든 운영의 ‘본부’가 됩니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-03-event-detail.png" alt="행사 상세 + 참가자 명단" />
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>참가자 30명이 등록된 행사 본부. 위쪽 KPI로 인원·출석·스케줄 진행을, 좌측 메뉴로 멘토·스케줄·출석 등 모든 탭을 오갑니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>양식(엑셀 템플릿)을 내려받아 명단을 채움</li><li>참가자 탭에서 엑셀 업로드 — 오류 난 행만 고쳐 다시 올리기 (중복은 자동으로 건너뜀)</li><li>좌측 메뉴로 다음 작업 이동</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>엑셀을 ‘원본’으로 두고 시스템이 집결지 목록을 자동 생성합니다. 관리자가 손으로 집결지를 적다 생기는 오타·누락을 없앴습니다.</p></div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>참가자 한 명 자세히 보기</h3></div>
+      <div class="narrow">
+        <div class="shot" style="flex:0 0 360px;max-width:360px"><img loading="lazy" src="walkthrough-assets/admin-20-participant-detail.png" alt="참가자 상세" /></div>
+        <div class="side">
+          <p class="screen-sub" style="margin-bottom:18px">명단에서 참가자를 클릭하면 오른쪽에서 상세 패널이 열립니다. 인적사항·보호자 연락처·집결지, 그리고 <b>특이사항</b>까지 한 화면에 모입니다.</p>
+          <div class="blocks" style="grid-template-columns:1fr 1fr">
+            <div class="b"><h4>여기서 할 수 있는 것</h4><p>참가자 정보 수정·삭제, 특이사항 확인. 명단에서는 이름 검색, 컬럼 정렬, 여러 명 선택 삭제도 됩니다.</p></div>
+            <div class="b feat"><h4>특이사항이 중요한 이유</h4><p>알러지·지병·적응 관련 메모가 여기 쌓입니다. 메딕이 진료할 때도, 멘토가 팀을 챙길 때도 이 정보를 함께 봅니다.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>팀 배정</h3></div>
+      <p class="screen-sub">자동으로 균등하게 나눈 뒤, 드래그로 손보고, 팀마다 멘토를 한 명씩 지정합니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-12-teams.png" alt="팀 배정" />
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>참가자를 팀으로 나누는 화면. 성별·나이·학과 등 기준을 골라 자동 배정하고, 각 팀에 담당 멘토를 붙입니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>조 수와 배정 기준 선택 후 ‘자동 배정’</li><li>카드를 드래그해 팀 간 인원 조정</li><li>각 팀 상단에서 담당 멘토 지정</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>자동으로 대강 만든 뒤 눈으로 다듬는 방식이 현장에서 가장 빠릅니다. 팀당 멘토는 1명 — 이미 멘토가 있는 팀에 다른 멘토를 지정하면, 기존 멘토가 자동으로 미배정으로 빠지며 교체됩니다.</p></div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>방 배정 <span style="font-size:13px;font-weight:600;color:var(--fg3)">· 숙박형 행사만</span></h3></div>
+      <p class="screen-sub">숙박형 행사면 ‘방 배정’ 탭이 생깁니다. 팀 배정과 똑같이 자동 배정 후 드래그로 조정하되, <b>반드시 같은 성별이 한 방</b>에 들어갑니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-21-rooms.png" alt="방 배정" />
+      <div class="note">1일형 행사에는 방 배정 탭이 아예 나타나지 않습니다 — 행사 유형(1일형/숙박형)에 따라 보이는 화면이 달라집니다.</div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>스케줄 등록</h3></div>
+      <p class="screen-sub">행사 안의 세부 일정(시간표)을 날짜별로 관리합니다. 여기 등록한 스케줄이 멘토 앱에 그대로 나타납니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-05-schedules.png" alt="스케줄 등록" />
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>날짜·시간·장소·팀별로 일정을 등록하고 진행 상태(예정/진행중/완료)를 관리합니다. 스케줄마다 사진 업로드를 켤 수 있습니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>날짜 탭을 고르고 ‘스케줄 추가’</li><li>시간·장소·담당 팀 입력</li><li>저장하면 멘토 앱 일정에 즉시 반영</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>스케줄이 멘토 앱·출석·사진·현장 보고를 잇는 축입니다. 진행 상태가 양쪽 앱에 같이 동기화돼, 따로 맞출 필요가 없습니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ 멘토·메딕 합류 ════ -->
+<section id="join">
+  <div class="wrap">
+    <div class="kicker k-flow"><span class="dot"></span>합류</div>
+    <h2 class="sec-title">멘토와 메딕을 행사에 등록합니다</h2>
+    <p class="sec-lead">멘토·메딕이 행사에 들어오는 방법은 두 가지입니다. 하지만 결국 <b>전화번호</b>로 한 사람으로 모입니다 — campOS는 전화번호 자체가 계정이라, 비밀번호가 없습니다.</p>
+
+    <div class="diagram">
+      <div class="dt">멘토·메딕은 어떻게 행사에 들어오나</div>
+      <div class="dd">관리자가 미리 넣어두거나(①), 멘토가 직접 가입하거나(②) — 두 길이 전화번호에서 만납니다.</div>
+      <div class="merge">
+        <div class="ins">
+          <div class="node s-admin"><div class="nh">① 사전등록</div><div class="nd">관리자가 이름·전화번호를 명단에 미리 넣어 둠</div></div>
+          <div class="node s-mentor"><div class="nh">② 셀프신청</div><div class="nd">멘토가 초대 링크로 들어와 전화번호 인증 후 가입</div></div>
+        </div>
+        <div class="mid">→<br><span style="font-size:10px;color:var(--fg4);font-weight:700;line-height:1.3;display:inline-block;margin-top:4px">같은 번호면<br>같은 사람</span></div>
+        <div class="out">
+          <div class="node s-prep"><div class="nh">→ 관리자 승인 → 행사 홈 입장</div><div class="nd" style="margin-top:8px">사전등록해 둔 번호로 멘토가 직접 가입하면 자동으로 같은 사람으로 연결됩니다. 관리자가 승인하면 그때부터 행사에 들어올 수 있어요.</div></div>
+        </div>
+      </div>
+      <div class="legend">
+        <span><b>계정</b> = 전화번호 — 한 번호는 곧 한 사람</span>
+        <span><b>연결</b> = 행사마다 따로 — 매 행사 승인 필요</span>
+        <span>행사가 끝나면 연결은 <b>만료</b>, 계정은 그대로</span>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>멘토 초대 · 승인</h3></div>
+      <p class="screen-sub">행사 상세 멘토 탭에서 초대 링크를 발급하고, 들어온 신청자를 승인하거나 반려합니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-17-mentors.png" alt="멘토 초대·승인" />
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>이 행사의 멘토 명단과 상태(사전등록/신청/승인/거절/만료)를 관리합니다. 초대 링크 발급, 집결지 편집, 승인·반려가 여기서 이뤄집니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>‘초대 링크’로 링크를 만들어 카톡·문자로 전달</li><li>가입한 사람이 ‘신청’ 상태로 들어옴</li><li>확인 후 ‘승인’ — 그때부터 행사에 입장 가능</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>계정은 전화번호 하나로 통합됩니다. 같은 번호면 다른 행사에서도 같은 사람이지만, 행사마다 연결은 따로라 매번 승인이 필요합니다.</p></div>
+      </div>
+
+      <div class="diagram">
+        <div class="dt">멘토 한 명의 상태가 바뀌는 흐름</div>
+        <div class="dd">위 화면의 ‘상태’ 칸이 이 순서로 변합니다. (예시 화면에서 정유진·최현우가 ‘사전등록’, 김민지·이태경·박서영이 ‘승인’ 상태예요.)</div>
+        <div class="flow">
+          <div class="node s-prep"><div class="nh">사전등록</div><div class="nd">관리자가 미리 등록</div></div>
+          <div class="ar">또는</div>
+          <div class="node s-prep"><div class="nh">신청</div><div class="nd">멘토가 가입 신청</div></div>
+          <div class="ar">→<small>관리자 승인</small></div>
+          <div class="node s-live"><div class="nh">승인</div><div class="nd">행사 입장 가능</div></div>
+          <div class="ar">→<small>행사 종료</small></div>
+          <div class="node s-done"><div class="nh">만료</div><div class="nd">연결만 종료<br>계정은 유지</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>스태프(메딕) 초대 · 승인</h3></div>
+      <p class="screen-sub">메딕도 같은 방식으로 초대하고 승인합니다. 스태프 앱은 하나지만 type으로 역할을 구분합니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-18-staff.png" alt="스태프 초대·승인" />
+      <div class="note"><b>왜 스태프 앱은 하나인가요?</b> 나중에 ‘촬영’, ‘안전요원’ 같은 역할이 생겨도 같은 앱에 type만 새로 붙이면 됩니다. 지금(MVP)은 메딕 하나만 만들었습니다.</div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role mentor"><span class="ico"></span>멘토1</span><h3>멘토 가입 · 로그인</h3></div>
+      <div class="narrow">
+        <div class="phone"><div class="scr"><img loading="lazy" src="walkthrough-assets/mentor-08-login.png" alt="멘토 로그인" /></div></div>
+        <div class="side">
+          <p class="screen-sub" style="margin-bottom:20px">초대 링크를 받은 멘토는 전화번호 인증으로 가입합니다. 한 번 가입한 뒤로는 등록된 번호만 입력하면 바로 로그인됩니다 — 비밀번호가 없습니다.</p>
+          <div class="steps">
+            <div class="step"><span class="n">1</span><span class="t"><b>초대 링크 접속</b> → 전화번호 입력 (010 + 8자리)</span></div>
+            <div class="step"><span class="n">2</span><span class="t"><b>SMS 인증번호 6자리</b> 입력</span></div>
+            <div class="step"><span class="n">3</span><span class="t"><b>이름 입력</b> 후 가입 신청 → 승인 대기</span></div>
+            <div class="step"><span class="n">4</span><span class="t">관리자가 승인하면 <b>행사 홈으로 입장</b></span></div>
+          </div>
+          <div class="note">메딕 가입도 똑같이 SMS 인증 + 관리자 승인입니다. 계정이 전화번호 기준이라, 같은 번호로 멘토와 메딕을 겸할 수도 있습니다(행사별 연결만 따로).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role mentor"><span class="ico"></span>멘토1</span><h3>승인된 뒤 — 멘토 행사 홈</h3></div>
+      <div class="narrow">
+        <div class="phone"><div class="scr"><img loading="lazy" src="walkthrough-assets/mentor-01-dashboard.png" alt="멘토 행사 홈" /></div></div>
+        <div class="side">
+          <p class="screen-sub" style="margin-bottom:20px">승인되면 담당 팀·오늘 일정·공지가 한 화면에 보입니다. 멘토1은 1팀(6명)을 맡았고, 강남역 10번 출구 집결지 권한도 받았네요.</p>
+          <div class="blocks" style="grid-template-columns:1fr">
+            <div class="b"><h4>이 화면에 보이는 것</h4><p>진행 중 배지 + 행사명·기간, 담당 팀 카드(1팀·6명), 집결지 권한, 최근 공지 3건, 오늘 일정. 아래 탭바로 담당팀·스케줄·현장보고·공지를 오갑니다.</p></div>
+            <div class="b feat"><h4>설계 포인트</h4><p>멘토에게는 자기 팀·자기 일정·자기에게 온 공지만 보입니다. 행사 전체를 다루는 관리 기능은 노출되지 않습니다.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ 행사 당일 ════ -->
+<section id="day">
+  <div class="wrap">
+    <div class="kicker k-flow"><span class="dot"></span>당일 운영</div>
+    <h2 class="sec-title">관리자와 멘토가 실시간으로 주고받습니다</h2>
+    <p class="sec-lead">이제 두 앱이 함께 움직입니다. 관리자가 공지를 보내면 멘토에게 도착하고, 관리자가 권한을 넘기면 멘토가 출석을 체크합니다. 각 화면을 <b>관리자 → 멘토</b> 순으로 짝지어 보여 드립니다.</p>
+
+    <!-- 공지 -->
+    <div class="screen">
+      <div class="screen-head"><h3>📣 공지 — 관리자가 쓰면 멘토에게 바로 도착</h3></div>
+      <div class="duo">
+        <div class="duo-flow">
+          <div class="col">
+            <span class="role admin rt"><span class="ico"></span>관리자1 · 행사 공지 작성</span>
+            <div class="shot wide"><img loading="lazy" src="walkthrough-assets/admin-13-event-notices.png" alt="관리자 공지 작성" /></div>
+            <div class="cap">받을 대상(관리자/멘토/스태프)과 긴급/일반을 골라 발송</div>
+          </div>
+          <div class="arrow">→<small>실시간</small></div>
+          <div class="col">
+            <span class="role mentor rt"><span class="ico"></span>멘토1 · 공지 수신</span>
+            <div class="phone"><div class="scr"><img loading="lazy" src="walkthrough-assets/mentor-05-notices.png" alt="멘토 공지 수신" /></div></div>
+            <div class="cap">벨 아이콘에 빨간 점 → 공지 목록 · 긴급은 강조 표시</div>
+          </div>
+        </div>
+      </div>
+      <div class="blocks">
+        <div class="b"><h4>무슨 흐름</h4><p>관리자가 대상을 정해 공지를 보내면, 그 대상의 앱에만 도착합니다. 긴급으로 보내면 받는 쪽에서 따로 강조됩니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>행사 상세 → 공지 탭에서 작성</li><li>대상과 긴급도를 골라 등록</li><li>멘토 앱 벨에 빨간 점이 켜짐</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>읽음 표시는 멘토 본인이 확인하는 용도입니다. 관리자가 ‘누가 읽었나’까지 추적하진 않습니다 — 꼭 확인이 필요하면 긴급 타입을 씁니다.</p></div>
+      </div>
+    </div>
+
+    <!-- 출석 -->
+    <div class="screen">
+      <div class="screen-head"><h3>🚌 출석체크 — 관리자가 권한을 넘기면 멘토가 체크</h3></div>
+      <p class="screen-sub">출석은 <b>선탑(버스 탑승) → 중앙(행사장 도착) → 종료(해산 전)</b> 세 단계입니다. 이 중 ‘선탑’만 멘토에게 맡길 수 있어요. 중앙·종료는 항상 관리자가 직접 합니다.</p>
+
+      <div class="narrow">
+        <div class="shot" style="flex:0 0 340px;max-width:340px"><img loading="lazy" src="walkthrough-assets/admin-19-gatherpoint-modal.png" alt="집결지 배정 모달" /></div>
+        <div class="side">
+          <h4 style="font-size:17px;font-weight:740;margin-bottom:10px">먼저, 멘토에게 집결지를 맡깁니다</h4>
+          <p style="font-size:14.5px;color:var(--fg2);line-height:1.62">멘토 명단에서 <b>‘집결지 편집’</b>을 누르면 이 창이 뜹니다. 드롭다운에서 집결지를 하나 고르면, 그 멘토는 <b>그 집결지의 선탑 출석</b>만 체크할 수 있게 됩니다. 다른 집결지나 중앙·종료 단계에는 손댈 수 없어요. — 권한을 ‘집결지 × 선탑 단계’로 잘게 끊어 두는 거죠.</p>
+        </div>
+      </div>
+
+      <div class="diagram">
+        <div class="dt">집결지 권한이 흘러가는 길</div>
+        <div class="flow">
+          <div class="node s-admin"><div class="nh">관리자</div><div class="nd">멘토에게 집결지 배정</div></div>
+          <div class="ar">→</div>
+          <div class="node s-mentor"><div class="nh">멘토 홈</div><div class="nd">‘집결지 권한’ 행이 생김</div></div>
+          <div class="ar">→</div>
+          <div class="node s-mentor"><div class="nh">멘토가 체크</div><div class="nd">그 집결지 선탑 출석만</div></div>
+          <div class="ar">→</div>
+          <div class="node s-admin"><div class="nh">관리자 화면</div><div class="nd">실시간으로 반영</div></div>
+        </div>
+      </div>
+
+      <p class="screen-sub" style="margin-top:32px;margin-bottom:0">실제 화면으로 보면 — 관리자는 단계별 출석부에서 집결지별 진행을 지켜보고, 권한 받은 멘토는 자기 집결지 명단만 체크합니다.</p>
+      <div class="duo">
+        <div class="duo-flow">
+          <div class="col">
+            <span class="role admin rt"><span class="ico"></span>관리자1 · 집결지별 권한 부여</span>
+            <div class="shot wide"><img loading="lazy" src="walkthrough-assets/admin-14-attendance.png" alt="관리자 출석 권한" /></div>
+            <div class="cap">단계 탭(선탑/중앙/종료) · 집결지별 진행 현황을 한눈에</div>
+          </div>
+          <div class="arrow">→<small>권한</small></div>
+          <div class="col">
+            <span class="role mentor rt"><span class="ico"></span>멘토1 · 선탑 출석체크</span>
+            <div class="phone"><div class="scr"><img loading="lazy" src="walkthrough-assets/mentor-03-attendance.png" alt="멘토 출석체크" /></div></div>
+            <div class="cap">권한 받은 집결지만 체크 · 탑승/미탑승/기타</div>
+          </div>
+        </div>
+      </div>
+      <div class="blocks">
+        <div class="b"><h4>무슨 흐름</h4><p>출석은 선탑(버스 탑승) → 중앙(행사장 도착) → 종료(해산 전) 3단계입니다. 관리자가 집결지별로 멘토에게 ‘선탑’ 단계만 맡길 수 있고, 중앙·종료는 관리자가 직접 합니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>관리자가 집결지 행에서 담당 멘토를 지정</li><li>그 멘토 홈에 ‘집결지 권한’ 행이 생김</li><li>멘토가 들어가 체크박스로 즉시 토글 (저장 버튼 없음)</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>한 집결지에 관리자가 없을 때 담당 멘토가 대신 체크합니다. 권한은 ‘이 집결지의 선탑 단계’로만 한정돼, 멘토가 다른 집결지나 종료 출석엔 손대지 못합니다.</p></div>
+      </div>
+    </div>
+
+    <!-- 담당 팀 관리 -->
+    <div class="screen">
+      <div class="screen-head"><span class="role mentor"><span class="ico"></span>멘토1</span><h3>담당 팀 관리</h3></div>
+      <div class="pair">
+        <div class="phone"><div class="scr"><img loading="lazy" src="walkthrough-assets/mentor-04-team.png" alt="멘토 담당팀 명단" /></div></div>
+        <div class="phone phone-clip"><div class="scr"><img loading="lazy" src="walkthrough-assets/mentor-10-team-member.png" alt="팀원 상세" /></div></div>
+      </div>
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>왼쪽은 우리 팀 참가자 명단, 오른쪽은 참가자를 누르면 뜨는 상세입니다. 인적사항과 함께 <b>건강·일반 특이사항</b>을 현장에서 바로 확인합니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>담당팀 탭에서 우리 팀 참가자 확인</li><li>참가자를 눌러 특이사항·연락처 확인</li><li>그 참가자가 태그된 사진도 모아 봄</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>관리자가 엑셀에 적은 특이사항이 멘토에게도 그대로 보입니다. 현장에서 더 챙겨야 할 참가자를 멘토가 미리 알 수 있게요.</p></div>
+      </div>
+    </div>
+
+    <!-- 스케줄 진행 + 사진 태그 -->
+    <div class="screen">
+      <div class="screen-head"><span class="role mentor"><span class="ico"></span>멘토1</span><h3>스케줄 진행 · 사진 태그</h3></div>
+      <div class="pair">
+        <div class="phone"><div class="scr"><img loading="lazy" src="walkthrough-assets/mentor-02-schedule.png" alt="멘토 스케줄 목록" /></div></div>
+        <div class="phone"><div class="scr"><img loading="lazy" src="walkthrough-assets/mentor-09-schedule-detail.png" alt="스케줄 상세 · 사진" /></div></div>
+      </div>
+      <p class="screen-sub" style="margin-top:22px;margin-bottom:0">관리자가 등록한 스케줄이 멘토 앱에 그대로 보입니다(왼쪽). 스케줄에 들어가면(오른쪽) 사진을 올리고, 그 자리에서 찍힌 참가자를 태그합니다.</p>
+      <div class="diagram">
+        <div class="dt">사진은 이렇게 올리고 태그합니다</div>
+        <div class="flow">
+          <div class="node s-mentor"><div class="nh">① 사진 올리기</div><div class="nd">스케줄 상세 ‘+추가’<br>카메라 또는 앨범</div></div>
+          <div class="ar">→</div>
+          <div class="node s-mentor"><div class="nh">② 사진 클릭</div><div class="nd">누가 찍혔는지<br>참가자 다중 선택</div></div>
+          <div class="ar">→</div>
+          <div class="node s-mentor"><div class="nh">③ 태그 저장</div><div class="nd">사진이 참가자에<br>연결됨</div></div>
+          <div class="ar">→</div>
+          <div class="node s-report"><div class="nh">④ 미태그 집계</div><div class="nd">한 번도 안 찍힌<br>참가자 자동 표시</div></div>
+        </div>
+      </div>
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>스케줄 상세에는 사진 그리드, 미태그 인원 집계, ‘스케줄 종료’ 버튼이 있습니다. (예시는 사진을 올리기 전이라 비어 있고 ‘미태그 6명’으로 떠 있어요.)</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>스케줄 진입 → 사진 ‘추가’</li><li>올린 사진을 눌러 찍힌 참가자 태그</li><li>미태그 인원을 보며 누락 보완</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>현장에서 제일 자주 하는 일이 사진입니다. ‘참가자를 먼저 고르고 찍기’가 아니라 ‘사진을 먼저 올리고 거기서 태그하기’ 흐름에 맞췄습니다.</p></div>
+      </div>
+    </div>
+
+    <!-- 스케줄 완료 처리 -->
+    <div class="screen">
+      <div class="screen-head"><h3>✅ 스케줄 완료 — 멘토가 닫으면 시스템이 합쳐서 마감</h3></div>
+      <p class="screen-sub">한 스케줄에는 여러 팀이 함께 참여합니다. 각 팀 멘토가 자기 팀 일정을 끝내면, <b>모든 팀이 끝났을 때 시스템이 그 스케줄을 자동으로 ‘완료’로 닫습니다.</b></p>
+      <div class="diagram">
+        <div class="dt">① 스케줄 하나의 상태가 바뀌는 흐름</div>
+        <div class="flow">
+          <div class="node s-prep"><div class="nh">예정</div><div class="nd">시작 전</div></div>
+          <div class="ar">→<small>시작 시각</small></div>
+          <div class="node s-live"><div class="nh">진행 중</div><div class="nd">현재 진행 중</div></div>
+          <div class="ar">→<small>멘토들이 종료</small></div>
+          <div class="node s-done"><div class="nh">완료</div><div class="nd">모든 팀 종료 시 자동</div></div>
+        </div>
+      </div>
+      <div class="diagram">
+        <div class="dt">② 누가 닫고, 어디에 반영되나</div>
+        <div class="flow">
+          <div class="node s-mentor"><div class="nh">각 팀 멘토</div><div class="nd">자기 팀 ‘종료’ 누름</div></div>
+          <div class="ar">→<small>모든 팀 종료되면</small></div>
+          <div class="node s-live"><div class="nh">시스템(자동)</div><div class="nd">그 스케줄 전체 완료 처리</div></div>
+          <div class="ar">→</div>
+          <div class="node s-admin"><div class="nh">관리자 화면</div><div class="nd">완료율(예: 2/15) 즉시 갱신</div></div>
+        </div>
+      </div>
+      <div class="blocks">
+        <div class="b"><h4>무슨 흐름</h4><p>일정이 끝났는지 가장 먼저 아는 사람은 현장의 팀 멘토입니다. 그래서 멘토가 자기 팀을 닫고, 시스템이 합산해 스케줄 전체를 마감합니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>멘토: 스케줄 상세 하단 ‘종료’ — 자기 팀만 닫힘</li><li>한 스케줄의 모든 팀이 종료되면 시스템이 자동 마감</li><li>관리자: 완료율 지표와 활동 로그에 자동 반영</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>관리자는 ‘각 팀이 종료를 눌렀는지’만 지켜보면 됩니다. 실수로 닫혔다면 관리자가 되돌릴 수 있고, 모든 스케줄이 닫히면 마무리 단계의 ‘결과보고 시작’ 버튼이 열립니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ 현장 기록 ════ -->
+<section id="field">
+  <div class="wrap">
+    <div class="kicker k-flow"><span class="dot"></span>현장 기록</div>
+    <h2 class="sec-title">현장에서 올라온 기록이 관리자에 쌓입니다</h2>
+    <p class="sec-lead">이번엔 방향이 반대입니다. 멘토1이 올린 현장 보고와 메딕1이 적은 진료 기록이 관리자1 화면에 실시간으로 누적되고, 관리자는 그걸 확인하고 답합니다. <b>멘토·메딕 → 관리자</b> 순으로 봅니다.</p>
+
+    <!-- 현장 보고 -->
+    <div class="screen">
+      <div class="screen-head"><h3>🚩 현장 보고 — 멘토가 올리면 관리자가 확인·응답</h3></div>
+      <div class="duo">
+        <div class="duo-flow">
+          <div class="col">
+            <span class="role mentor rt"><span class="ico"></span>멘토1 · 보고 작성과 목록</span>
+            <div class="pair" style="margin-bottom:0">
+              <div class="phone" style="width:224px;flex-basis:224px"><div class="scr"><img loading="lazy" src="walkthrough-assets/mentor-07-field-report-new.png" alt="현장보고 작성" /></div></div>
+              <div class="phone" style="width:224px;flex-basis:224px"><div class="scr"><img loading="lazy" src="walkthrough-assets/mentor-06-field-reports.png" alt="현장보고 목록+응답" /></div></div>
+            </div>
+            <div class="cap">스케줄에 연결해 작성 → 관리자 응답까지 같은 화면에서 확인</div>
+          </div>
+          <div class="arrow">→<small>즉시</small></div>
+          <div class="col">
+            <span class="role admin rt"><span class="ico"></span>관리자1 · 누적 열람과 확인</span>
+            <div class="shot wide"><img loading="lazy" src="walkthrough-assets/admin-15-field-reports.png" alt="관리자 현장보고 탭" /></div>
+            <div class="cap">현장 보고 탭에 시간순 누적 · ‘확인’ + 코멘트로 회신</div>
+          </div>
+        </div>
+      </div>
+      <div class="blocks">
+        <div class="b"><h4>무슨 흐름</h4><p>멘토가 현장 상황을 글로 올리면(스케줄·작성 시각·작성자 자동 기록), 관리자가 확인하고 코멘트를 답니다. 그 답이 멘토 앱에 ‘관리자 응답’으로 다시 표시됩니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>멘토: 스케줄 하단 ‘보고 작성’ 또는 현장 보고 탭</li><li>관리자: 현장 보고 탭에서 열람 후 ‘확인’ + 코멘트</li><li>코멘트가 멘토 앱에 응답으로 도착</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>별도의 ‘이슈’ 기능을 만들지 않았습니다. 자유롭게 쓰고, 시간순으로 쌓이고, 관리자가 확인하는 단순한 흐름으로 정리했습니다.</p></div>
+      </div>
+    </div>
+
+    <!-- 메딕 -->
+    <div class="screen">
+      <div class="screen-head"><h3>🩺 건강 기록 — 메딕이 적으면 관리자 건강 탭에 누적</h3></div>
+      <div class="duo">
+        <div class="duo-flow">
+          <div class="col">
+            <span class="role medic rt"><span class="ico"></span>메딕1 · 참가자 명단과 진료 기록</span>
+            <div class="pair" style="margin-bottom:0">
+              <div class="phone phone-clip" style="width:224px;flex-basis:224px"><div class="scr"><img loading="lazy" src="walkthrough-assets/medic-02-participants.png" alt="메딕 참가자 명단" /></div></div>
+              <div class="phone phone-clip" style="width:224px;flex-basis:224px"><div class="scr"><img loading="lazy" src="walkthrough-assets/medic-01-charts.png" alt="메딕 차트" /></div></div>
+            </div>
+            <div class="cap">참가자를 검색해 진료 기록 작성 — 한 명에 여러 건 시간순 누적</div>
+          </div>
+          <div class="arrow">→<small>즉시</small></div>
+          <div class="col">
+            <span class="role admin rt"><span class="ico"></span>관리자1 · 건강 탭</span>
+            <div class="shot wide"><img loading="lazy" src="walkthrough-assets/admin-16-health.png" alt="관리자 건강 탭" /></div>
+            <div class="cap">참가자별로 쌓인 메딕 기록을 열람</div>
+          </div>
+        </div>
+      </div>
+      <div class="blocks">
+        <div class="b"><h4>무슨 흐름</h4><p>메딕이 참가자별 진료 내역을 글로 남기면(작성 시각·작성 메딕 자동), 관리자는 건강 탭에서 누적된 기록을 봅니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>메딕: 참가자 검색 → 상세 → 진료 기록 작성</li><li>한 참가자에 여러 건이 시간순으로 쌓임</li><li>관리자: 건강 탭에서 참가자별로 확인</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>한 행사에 메딕 인원 제한이 없습니다. 여러 메딕이 함께 기록할 수 있고, 각 기록에는 누가 썼는지가 자동으로 표시됩니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ 마무리 ════ -->
+<section id="close">
+  <div class="wrap">
+    <div class="kicker k-admin"><span class="dot"></span>마무리</div>
+    <h2 class="sec-title">정리하고, 기록을 남기고, 닫습니다</h2>
+    <p class="sec-lead">행사는 만들어진 순간부터 닫힐 때까지 정해진 상태를 거칩니다. 처음 보면 헷갈리기 쉬우니, 먼저 전체 상태 흐름부터 보겠습니다.</p>
+
+    <div class="diagram">
+      <div class="dt">행사가 거치는 네 가지 상태</div>
+      <div class="dd">화살표 위 글자가 ‘무엇이 다음 단계로 넘기는지’입니다.</div>
+      <div class="flow">
+        <div class="node s-prep"><div class="nh">준비중</div><div class="nd">필수값을 채우면 자동 진입<br>(그 전엔 임시저장 상태)</div></div>
+        <div class="ar">→<small>시작일 도달 · 자동</small></div>
+        <div class="node s-live"><div class="nh">진행중</div><div class="nd">행사가 열려 운영 중</div></div>
+        <div class="ar">→<small>관리자가 시작</small></div>
+        <div class="node s-report"><div class="nh">결과보고</div><div class="nd">끝났지만 정리하는 기간<br>(보고서·사진·회고)</div></div>
+        <div class="ar">→<small>관리자가 마감</small></div>
+        <div class="node s-done"><div class="nh">종료</div><div class="nd">읽기 전용 전환<br>연결·초대 링크 만료</div></div>
+      </div>
+      <div class="legend">
+        <span><b>자동</b> = 시스템이 시각에 맞춰 전환</span>
+        <span><b>수동</b> = 관리자가 버튼으로 전환</span>
+        <span>‘결과보고 시작’ 버튼은 <b>모든 스케줄 완료 + 종료 출석체크</b> 후 열립니다</span>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>다음 작업 · 진행 현황</h3></div>
+      <p class="screen-sub">행사 상세의 ‘다음 작업’ 위젯이 마무리까지 무엇이 남았는지 짚어 줍니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-09-event-todos.png" alt="행사별 할 일" />
+      <div class="note">💡 <b>‘종료’를 누르는 순간</b> — 멘토·스태프 연결과 초대 링크가 모두 만료되고, 행사 전체가 읽기 전용으로 바뀝니다. 마지막 단계라 신중히 누릅니다.</div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>회고 — 전체 모아보기</h3></div>
+      <p class="screen-sub">회고는 두 군데서 만납니다. <b>행사별</b>로는 진행 중 느낀 점을 카테고리(이슈/개선점/잘된 점/메모)로 그때그때 적고 — 이 화면처럼 <b>전체 회고 페이지</b>에서는 여러 행사에 쌓인 회고를 한곳에 모아 봅니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-10-retros.png" alt="전체 회고" />
+      <div class="note">💡 행사 하나에만 머무르지 않고 <b>여러 행사를 거치며 쌓인 교훈</b>을 통합해 보는 화면입니다. 좌측 메뉴 ‘회고’에서 언제든 들어올 수 있어요.</div>
+      <div class="note" style="margin-top:14px"><b>결과보고서</b>는 행사가 끝난 뒤 만드는 정리 산출물입니다. 참가자 수·출석률·이슈 요약 같은 항목이 자동으로 채워지고 관리자가 다듬습니다. (들어갈 항목은 운영하며 확정해 나갈 예정)</div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-head"><span class="role admin"><span class="ico"></span>관리자1</span><h3>활동 로그</h3></div>
+      <p class="screen-sub">누가 언제 무엇을 했는지가 감사 기록으로 남습니다. 자동 상태 전환, 멘토 출석, 공지 발송까지 모두 누적됩니다.</p>
+      <img class="shot wide" loading="lazy" src="walkthrough-assets/admin-11-audit.png" alt="활동 로그" />
+      <div class="blocks">
+        <div class="b"><h4>무슨 화면</h4><p>행사·참가자·멘토·스케줄·공지 등 주요 행위를 시각·주체와 함께 기록합니다. 시스템이 자동으로 한 일도 따로 표시됩니다.</p></div>
+        <div class="b"><h4>이렇게 씁니다</h4><ol><li>행사 상세 → 활동 로그 탭</li><li>시간순으로 행위를 추적</li><li>책임 소재와 이력을 확인</li></ol></div>
+        <div class="b feat"><h4>설계 포인트</h4><p>‘누가 눌렀는지’를 항상 되짚을 수 있어, 여러 명이 함께 운영해도 책임과 이력이 분명하게 남습니다.</p></div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:36px">
+      📎 <b>이 밖에</b> — <b>관리자 계정 관리</b>(여러 관리자 초대·승인), <b>메딕 홈·공지 수신</b> 화면도 위와 같은 패턴으로 동작합니다.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h2>여기까지가 campOS입니다</h2>
+    <p>준비 → 합류 → 당일 운영 → 현장 기록 → 마무리. 한 행사의 처음과 끝을 세 앱이 함께 움직입니다.</p>
+    <p class="tag">관리자 · 멘토 · 메딕 — 실제 동작 화면 기준</p>
+  </div>
+</footer>
+
+<!-- 라이트박스 -->
+<div id="lb">
+  <span class="x">&times;</span>
+  <img id="lbimg" alt="" />
+  <div class="hint">아무 곳이나 클릭하거나 ESC를 누르면 닫힙니다</div>
+</div>
+
+<script>
+  (function(){
+    var lb = document.getElementById('lb');
+    var lbimg = document.getElementById('lbimg');
+    document.addEventListener('click', function(e){
+      var t = e.target;
+      if (t.tagName !== 'IMG') return;
+      // 자료 스크린샷만 (img.shot, .shot 안 img, .phone 안 img)
+      if (t.classList.contains('shot') || t.closest('.shot') || t.closest('.phone')) {
+        lbimg.src = t.src; lb.classList.add('on'); document.body.style.overflow = 'hidden';
+      }
+    });
+    lb.addEventListener('click', function(){ lb.classList.remove('on'); document.body.style.overflow = ''; });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') { lb.classList.remove('on'); document.body.style.overflow = ''; }
+    });
+  })();
+</script>
+
+</body>
+</html>
