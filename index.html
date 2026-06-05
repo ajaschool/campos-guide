@@ -304,6 +304,15 @@
         <div class="b"><h4>이렇게 씁니다</h4><ol><li>맨 위 ‘처리할 일’에서 밀린 일 확인</li><li>긴급·전체·행사별로 필터링</li><li>항목을 누르면 해당 작업 화면으로 바로 이동</li></ol></div>
         <div class="b feat"><h4>설계 포인트</h4><p>‘처리할 일’이 모든 할 일이 모이는 단 하나의 통로입니다. 할 일 페이지·행사 상세에서도 같은 목록을 그대로 봅니다.</p></div>
       </div>
+      <div class="diagram">
+        <div class="dt">맨 위 ‘운영 현황’ 띠 — 행사 상태에 따라 모습이 바뀝니다</div>
+        <div class="dd">대시보드 최상단의 가로 띠 하나로 “지금 챙길 행사가 무엇인지”를 알려 줍니다. 진행 중인 행사가 있으면 그 행사를, 없으면 가장 임박한 준비 중 행사를 보여 줍니다.</div>
+        <div class="blocks" style="margin-top:0">
+          <div class="b"><h4>🟢 진행 중일 때</h4><p><b>초록 ‘LIVE’ 띠.</b> 지금 운영 중인 행사명과 ‘운영 현황 →’이 떠, 누르면 그 행사로 바로 들어갑니다. 진행 중 행사가 여럿이면 가장 먼저 시작한 행사를 보여 줍니다.</p></div>
+          <div class="b"><h4>⚪ 시작 전일 때</h4><p><b>회색 ‘D-N’ 띠.</b> 진행 중 행사가 없으면, 시작이 가장 가까운 준비 중 행사를 D-day와 함께 띄웁니다.</p></div>
+          <div class="b"><h4>⚫ 행사가 없을 때</h4><p><b>비활성 띠.</b> 진행 중·준비 중 행사가 모두 없으면 “예정된 행사가 없어요 · 행사 만들기”만 보입니다.</p></div>
+        </div>
+      </div>
     </div>
 
     <div class="screen">
@@ -460,6 +469,11 @@
           <div class="node s-live"><div class="nh">승인</div><div class="nd">행사 입장 가능</div></div>
           <div class="ar">→<small>행사 종료</small></div>
           <div class="node s-done"><div class="nh">만료</div><div class="nd">연결만 종료<br>계정은 유지</div></div>
+        </div>
+        <div class="legend">
+          <span>신청을 <b>반려</b>하면 ‘반려’로 — 멘토 앱에 입장하지 못합니다</span>
+          <span>승인 뒤에도 관리자가 권한을 거두면 <b>취소</b>로 바뀝니다</span>
+          <span>스태프(메딕)도 똑같은 6가지 상태를 거칩니다</span>
         </div>
       </div>
     </div>
@@ -650,6 +664,21 @@
           <div class="node s-admin"><div class="nh">관리자 화면</div><div class="nd">완료율(예: 2/15) 즉시 갱신</div></div>
         </div>
       </div>
+      <div class="diagram">
+        <div class="dt">③ 안 끝내는 팀이 있으면 — 관리자가 강제로 닫습니다</div>
+        <div class="dd">시간이 지나도 어떤 팀이 ‘종료’를 누르지 않으면 스케줄이 계속 ‘진행 중’으로 남습니다. 이때 관리자가 한 번에 마감할 수 있습니다.</div>
+        <div class="flow">
+          <div class="node s-prep"><div class="nh">일부 팀 미종료</div><div class="nd">스케줄이 안 닫힘</div></div>
+          <div class="ar">→<small>관리자 판단</small></div>
+          <div class="node s-admin"><div class="nh">강제 종료</div><div class="nd">스케줄 상세의 팀별 현황표에서 ‘강제 종료’</div></div>
+          <div class="ar">→</div>
+          <div class="node s-done"><div class="nh">전체 완료</div><div class="nd">남은 팀은 ‘관리자 강제’로 기록<br>+ 다음 스케줄 자동 시작</div></div>
+        </div>
+        <div class="legend">
+          <span>표에서 <b>멘토 종료</b>와 <b>관리자 강제</b>는 다른 색 꼬리표로 구분됩니다</span>
+          <span>이미 완료된 스케줄을 다시 강제 종료해도 중복 기록되지 않습니다</span>
+        </div>
+      </div>
       <div class="blocks">
         <div class="b"><h4>무슨 흐름</h4><p>일정이 끝났는지 가장 먼저 아는 사람은 현장의 팀 멘토입니다. 그래서 멘토가 자기 팀을 닫고, 시스템이 합산해 스케줄 전체를 마감합니다.</p></div>
         <div class="b"><h4>이렇게 씁니다</h4><ol><li>멘토: 스케줄 상세 하단 ‘종료’ — 자기 팀만 닫힘</li><li>한 스케줄의 모든 팀이 종료되면 시스템이 자동 마감</li><li>관리자: 완료율 지표와 활동 로그에 자동 반영</li></ol></div>
@@ -720,6 +749,7 @@
         <div class="b"><h4>이렇게 씁니다</h4><ol><li>메딕: 참가자 검색 → 상세 → 진료 기록 작성</li><li>한 참가자에 여러 건이 시간순으로 쌓임</li><li>관리자: 건강 탭에서 참가자별로 확인</li></ol></div>
         <div class="b feat"><h4>설계 포인트</h4><p>한 행사에 메딕 인원 제한이 없습니다. 여러 메딕이 함께 기록할 수 있고, 각 기록에는 누가 썼는지가 자동으로 표시됩니다.</p></div>
       </div>
+      <div class="note">📋 <b>관리자 건강 탭의 두 가지 보기</b> — 참가자별 누적 기록과 함께, 모든 진료 기록을 한 줄씩 모은 <b>전체 차트</b>(작성일·시각·이름·팀·담당 멘토·증상·처치·비고)를 날짜·팀·메딕으로 걸러 봅니다. 기록을 쓴 메딕은 <b>본인이 쓴 기록만</b> 고치거나 지울 수 있어요.</div>
     </div>
   </div>
 </section>
@@ -747,6 +777,7 @@
         <span><b>자동</b> = 시스템이 시각에 맞춰 전환</span>
         <span><b>수동</b> = 관리자가 버튼으로 전환</span>
         <span>‘결과보고 시작’ 버튼은 <b>모든 스케줄 완료 + 종료 출석체크</b> 후 열립니다</span>
+        <span>날씨 등으로 <b>열지 못하면</b> 종료 전 어느 단계서든 ‘취소’로 닫을 수 있습니다(사유 기록)</span>
       </div>
     </div>
 
@@ -777,7 +808,7 @@
     </div>
 
     <div class="note" style="margin-top:36px">
-      📎 <b>이 밖에</b> — <b>관리자 계정 관리</b>(여러 관리자 초대·승인), <b>메딕 홈·공지 수신</b> 화면도 위와 같은 패턴으로 동작합니다.
+      📎 <b>이 밖에</b> — <b>관리자 계정 관리</b>(새 관리자는 가입 신청 후 기존 관리자가 승인), <b>메딕 홈·공지 수신</b> 화면도 위와 같은 패턴으로 동작합니다.
     </div>
   </div>
 </section>
